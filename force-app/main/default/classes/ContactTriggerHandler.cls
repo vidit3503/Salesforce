@@ -117,12 +117,3 @@ public with sharing class ContactTriggerHandler {
         insert contACTList;
     }
 }
-//     public static void createContact(Decimal MaxAmmount,Decimal ContactAmmount,Id DeployAccount){
-
-//         System.debug('RemAmount' + RemAmount);
-//         System.debug('ContactAmount' + ContactAmmount);
-//         System.debug('AccountID'+ DeployAccount);
-//         //store all created contact
-        
-//     }
-// }

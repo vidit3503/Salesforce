@@ -2,8 +2,7 @@ trigger ContactTrigger on Contact (after insert,before insert,before update , be
 
     
     if(Trigger.isBefore && Trigger.isInsert) {
-        ContactTriggerHandler.addPass(Trigger.new);
-        
+        ContactTriggerHandler.addPass(Trigger.new);  
     }
         // if(Trigger.isAfter){
     // ContactTriggerHandler.createEventTrigger( Trigger.isInsert , Trigger.new);

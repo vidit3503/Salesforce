@@ -1,0 +1,69 @@
+<apex:page controller="dashboard" > 
+    <apex:form >
+<html lang="en">
+    <head>
+        <style>
+            body{background-color: #f2f2f2 ;
+                background-image: url(https://mvclouds-e-dev-ed--c.develop.vf.force.com/resource/1668149733000/BackgroundImage?)}
+            #maindiv{
+                height: 100%;
+                width: 100%;
+            }
+            #header{
+                margin-top: 10px;
+                height: 40px;
+                background-color: #f2f2f2;
+                width: 100%;
+                text-align: center;
+                font-size: 30px;
+            }
+            #aligncenter{
+                margin-top: 10px;
+                width: 100%;
+                text-align: center;
+                padding-left: 60%;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div>
+            <div id="header"><apex:outputlabel>Dashboard of {!recordidfetch} </apex:outputlabel></div>
+            <!-- print string recievedaccountId here -->
+            <div>
+                <apex:commandButton value=" Login " action="{!loginPage}"  />
+                <apex:commandButton value=" Register " action="{!register}"  />
+            </div>
+            <div id="horizontal-group"> 
+                <div id="horizontal-left">
+                    <apex:pageBlock title="Contacts">
+                        <apex:pageBlockTable value="{!conlist}" var="con">
+                            <apex:column value="{!con.FirstName}" />
+                            <apex:column value="{!con.LastName}" />
+                            <apex:column value="{!con.Email}" />
+                            <apex:column value="{!con.AccountId}"/>
+                        </apex:pageBlockTable>
+                    </apex:pageBlock>
+                    <apex:commandButton value="Next" action="{!Next}" disabled="{!nxt}"/>   
+                    <apex:commandButton value="previous" action="{!previous}" disabled="{!Previous}"/><br/>
+                </div>
+                <div>
+                    <apex:pageBlock title="Opportunities">
+                        <apex:pageBlockTable value="{!opplist}" var ="opp">
+                            <apex:column value="{!opp.Name}" />
+                            <apex:column value="{!opp.StageName}" />
+                            <apex:column value="{!opp.Amount}" />
+                            <apex:column value="{!opp.CloseDate}" />
+                        </apex:pageBlockTable>
+                    </apex:pageBlock>
+                    <div id="alignCenter">
+                        <apex:commandButton value="Next" action="{!Next2}" disabled="{!nxtblock2}"/>   
+                        <apex:commandButton value="previous" action="{!previous2}" disabled="{!Previousblock2}"/>
+                    </div>
+                </div>
+            </div>      
+        </div>
+    </body>
+</html>
+</apex:form>
+</apex:page>

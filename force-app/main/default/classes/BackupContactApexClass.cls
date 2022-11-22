@@ -76,37 +76,58 @@ public with sharing class ContactTriggerHandler {
     public static void TheGreatProblem(List<Contact> ConList){
         Decimal MaxAmmount ;
         Decimal RemAmount ;
+        Set<Id> accountIds = new Set<Id>();
+        for (Contact c : ConList) {
+            if(c.AccountId != null) {
+                accountIds.add(c.AccountId);
+            }
+        }
+        Map<Id, Account> accountMap = new Map<Id, Account>([SELECT Id, MaxAmmount__c FROM Account WHERE Id IN :accountIds]);
         for (Contact c : ConList) {
             if(c.AccountId!=null){
-                Account a = [SELECT Id, MaxAmmount__c FROM Account WHERE Id = :c.AccountId];
-                MaxAmmount = a.MaxAmmount__c;
+                MaxAmmount = accountMap.get(c.AccountId).MaxAmmount__c;
                 System.debug('MaxAmmount' + MaxAmmount);
                 if(c.Amount_Great_Problem__c > MaxAmmount) {
+                    c.LastName = 'Name' ;               
                     c.Amount_Great_Problem__c = MaxAmmount;
-                    createContact(MaxAmmount ,C.Amount_Great_Problem__c , c.AccountId);                    
                 }
             }
         }
-    }  
-    
-    public static void createContact(Decimal MaxAmmount , Decimal ContactAmmount , Id DeployAccount ){
-
-        Decimal RemAmount = ContactAmmount - MaxAmmount;
-        System.debug('RemAmount' + RemAmount);
-        System.debug('ContactAmount' + ContactAmmount);
-        System.debug('AccountID'+ DeployAccount);
-        if(RemAmount > 0) {
-            Contact con = new Contact();
-            con.LastName = 'GreatProblemContact' + RemAmount;
-            con.AccountId = DeployAccount;
+        
+        Contact con = new Contact();
+        while (RemAmount > 0) {
+            Integer i = 0;
+            i++;
+            con.LastName = 'Created Contact' + i ;
+            RemAmount = RemAmount - MaxAmmount;
+            con.AccountId = accountIds.iterator().next();
             if(RemAmount > MaxAmmount) {
                 con.Amount_Great_Problem__c = MaxAmmount;
             }
             else {
                 con.Amount_Great_Problem__c = RemAmount;
             }
-            insert con;
-            createContact(MaxAmmount , RemAmount , DeployAccount);
-        }
+        }  
+        insert con;
     }
-}
+}  
+    // public static void createContact(Decimal MaxAmmount , Decimal ContactAmmount , Id DeployAccount ){
+
+    //     Decimal RemAmount = ContactAmmount - MaxAmmount;
+    //     System.debug('RemAmount' + RemAmount);
+    //     System.debug('ContactAmount' + ContactAmmount);
+    //     System.debug('AccountID'+ DeployAccount);
+    //     if(RemAmount > 0) {
+    //         Contact con = new Contact();
+    //         con.LastName = 'GreatProblemContact' + RemAmount;
+    //         con.AccountId = DeployAccount;
+    //         if(RemAmount > MaxAmmount) {
+    //             con.Amount_Great_Problem__c = MaxAmmount;
+    //         }
+    //         else {
+    //             con.Amount_Great_Problem__c = RemAmount;
+    //         }
+    //         createContact(MaxAmmount , RemAmount , DeployAccount);
+    //         insert con;
+    //     }
+    // }

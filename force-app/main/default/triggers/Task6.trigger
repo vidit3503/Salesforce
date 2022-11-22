@@ -1,5 +1,4 @@
 trigger Task6 on Account (before insert, after update ) {
-
     // send mail to contacts when account is updated
     if (Trigger.isUpdate) {
         List<Contact> contacts = [SELECT Id, Email, FirstName, LastName, AccountId, Account.Name FROM Contact WHERE AccountId IN :Trigger.newMap.keySet()];

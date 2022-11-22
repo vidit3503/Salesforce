@@ -9,13 +9,13 @@ trigger ContactTrigger on Contact (after insert,before insert,before update , be
     // ContactTriggerHandler.createEventTrigger( Trigger.isInsert , Trigger.new);
     // }  
 
-    if(Trigger.isAfter && (Trigger.isInsert || Trigger.isUpdate || Trigger.isUndelete) ) {
-        ContactTriggerHandler.RollUpSummary(Trigger.new);
-    }
+    // if(Trigger.isAfter && (Trigger.isInsert || Trigger.isUpdate || Trigger.isUndelete) ) {
+    //     ContactTriggerHandler.RollUpSummary(Trigger.new);
+    // }
 
-    if(Trigger.isAfter && Trigger.isDelete) {
-        ContactTriggerHandler.onAfterDelete(Trigger.old);
-    }
+    // if(Trigger.isAfter && Trigger.isDelete) {
+    //     ContactTriggerHandler.onAfterDelete(Trigger.old);
+    // }
 
     // if(Trigger.isUpdate && Trigger.isAfter) {
     //     ContactTriggerHandler.TheSheepPeoblem(Trigger.new , Trigger.old );

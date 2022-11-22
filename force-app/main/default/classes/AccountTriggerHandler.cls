@@ -6,7 +6,7 @@ public with sharing class AccountTriggerHandler {
             AppReq.setComments('Account Approval Submission');
             AppReq.setObjectId(a.Id);
             Approval.ProcessResult approvalResult = Approval.process(AppReq);
-            System.debug('offer submitted for approval successfully: '+approvalResult .isSuccess());
+            System.debug('offer submitted for approval successfully: '+approvalResult.isSuccess());
         }
     }
 

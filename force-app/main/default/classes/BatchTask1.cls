@@ -9,6 +9,8 @@ global class BatchTask1 implements Database.Batchable<sObject> {
         update ACClIST;
     }    
     global void finish(Database.BatchableContext bc){
+        BatchTask2 BatchTask2=new BatchTask2();
+        Id batchId = Database.executeBatch(BatchTask2);   
         // System.debug('Total records processed' + recordinsertcount);
     }    
 }

@@ -1,0 +1,5 @@
+<apex:page controller="UploadFilesInOpportunity">
+    <apex:form>
+        <apex:commandButton value="Upload Files" action="{!uploadFilesInOpportunity}" />
+    </apex:form>
+</apex:page>

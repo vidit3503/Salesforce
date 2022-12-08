@@ -1,25 +1,34 @@
 global class BatchTask3 implements Database.Batchable<sObject> {
-    global Database.QueryLocator start(Database.BatchableContext bc) {
-        // collect the batches of records or objects to be passed to execute
-        return Database.getQueryLocator([SELECT ID , NAME ,Email_Address__c FROM Account ]);
+    
+    global Database.QueryLocator start(Database.BatchableContext BC) {
+        String query = 'SELECT Id,Name FROM Account';        
+        return Database.getQueryLocator(query);
     }
-    global void execute(Database.BatchableContext bc, List<Account> acclist){
-        List<Account> accL = new List<Account>();
-        EmailTemplate et = [SELECT id FROM EmailTemplate WHERE developername='Accountnamechange'];
-        for(Account acc : acclist){
-            acc.OwnerId = '0055g00000GF9Rl';
-            accL.add(acc);
+    
+    global void execute(Database.BatchableContext BC, List<Account> scope) {
+        //declare variable to store Id of the user
+        // count variable to count total records are updated
+        Integer count = 0;
+        Id userId = [select id from user where Name='Wilson'].id;
+        for(Account a : scope) {
+            a.ownerId=userId;
+            count++;
         }
-        update accL;
-        Account accountList = new Account();
-        if (accountList.Owner.Email != null) {
-            Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-            mail.setTargetObjectId(accountList.Id);
-            mail.setTemplateId(et.Id);
-            Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
-        }
-    }    
-    global void finish(Database.BatchableContext bc){
-        // execute any post-processing operations
-    }    
+        update scope;
+
+        //send mail to the user
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+        // mail.setToAddresses(new String[] {a.Email_Address__c});
+        mail.setTargetObjectId(userId);
+        mail.setSenderDisplayName('Wilson');
+        mail.setSubject('Account Owner Changed');
+        mail.setPlainTextBody('Hi, Your account owner has been changed to Wilson  ' + count + '  accounts have been updated');
+        mail.setSaveAsActivity(false);
+        // mail.setSaveAsActivity('false');
+        Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+    }
+
+    global void finish(Database.BatchableContext BC) {
+        //Database.executeBatch(new batchDemoconCreate());
+    }
 }

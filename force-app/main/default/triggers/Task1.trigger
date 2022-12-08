@@ -1,6 +1,5 @@
 Trigger Task1 on Contact (before insert ,before update , after delete ,after insert , after update ,  before delete ) {
-    
-    
+
     if(Trigger.isBefore){ 
         system.debug('Before Trigger');
         if(Trigger.isUpdate){

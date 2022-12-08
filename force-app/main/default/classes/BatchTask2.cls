@@ -8,7 +8,7 @@ global class BatchTask2 implements Database.Batchable<sObject> {
         List<Opportunity> OOppsList = new List<Opportunity>();
         for (Account acc : acclist) {
             Opportunity Oops = new Opportunity();
-            Oops.Name = 'Opp'+ acc.Name; 
+            Oops.Name = 'Opp'+ acc.Name ; 
             Oops.StageName = 'Processing';
             Oops.CloseDate = date.today().addDays(15);
             Oops.AccountId = acc.Id ;

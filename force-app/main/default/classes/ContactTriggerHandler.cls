@@ -1,5 +1,8 @@
 public with sharing class ContactTriggerHandler {
+
     public static void createEventTrigger(Boolean isInsert, List<Contact> ConList) {
+        List<Event> eventlist = new List<Event>();
+        
         for(Contact con : ConList) {
             Event event = new Event();
             event.WhoId = con.Id;
@@ -7,8 +10,9 @@ public with sharing class ContactTriggerHandler {
             event.StartDateTime = System.now();
             event.EndDateTime = System.now().addDays(10);
             event.OwnerId = con.OwnerId;
-            insert event;
-       }
+            eventlist.add(event);
+        }
+        insert eventlist;
     }  
     public static void addPass(List<Contact> Conlist) {
         for (Contact C : Conlist) {
@@ -19,16 +23,14 @@ public with sharing class ContactTriggerHandler {
     }
 
     public static void RollUpSummary(List<Contact> Conlist) {
-        Map<Id, Account> accountMap = new Map<Id, Account>([SELECT Id, (SELECT Id, Amount__c FROM Contacts) FROM Account]);
+        Map<Id, Account> accountMap = new Map<Id, Account>([SELECT Id, (SELECT Id, Amount__c , Email FROM Contacts) FROM Account]);
         for (Contact C : Conlist) {
-            if(c.AccountId != null) {  
+            if(c.AccountId != null && c.Amount__c !=null) {  
                 Account A = accountMap.get(C.AccountId);
                 Decimal totalAmount = 0;
                 for (Contact con : A.Contacts) {
                     System.debug(con.Amount__c);
-                    if(con.Amount__c !=null) {
                         totalAmount = totalAmount + con.Amount__c;
-                    }
                 }
                 A.Total_Amount_Contact__c = totalAmount;
             }
@@ -62,14 +64,17 @@ public with sharing class ContactTriggerHandler {
         }
 
         List<Contact> Cont = [SELECT Id , Name FROM Contact WHERE AccountId = : oldAccountId];
+        // new list
+        List<Contact> contNew = new List<Contact>();
         System.debug('Cont' + Cont);
         System.debug('OldAccId' + oldAccountId);
         System.debug('NewAccId' + newAccountId);
-        if(oldAccountId != newAccountId) {
+        if(oldAccountId != newAccountId && oldAccountId != null ) {
             for(Contact c : Cont) {
                 c.AccountId = newAccountId;
-                update c;
+                contNew.add(c);
             }
+            update contNew;
         }
     }
     
@@ -90,12 +95,14 @@ public with sharing class ContactTriggerHandler {
             if(c.AccountId!=null){
                 MaxAmmount = accountMap.get(c.AccountId).MaxAmmount__c;
                 System.debug('MaxAmmount' + MaxAmmount);
-                if(c.Amount_Great_Problem__c > MaxAmmount) { 
+            // if max ammount is null then it will not execute
+                
+                if(c.Amount_Great_Problem__c > MaxAmmount && MaxAmmount != null) { 
                     c.LastName = 'GreatProblem';
                     RemAmount = c.Amount_Great_Problem__c;
                     System.debug('RemAmount' + RemAmount);
                     RemAmount = c.Amount_Great_Problem__c - MaxAmmount;
-                    
+
                     while (RemAmount > 0) {
                         Contact con = new Contact();
                         RemAmount = RemAmount - MaxAmmount;
@@ -110,10 +117,12 @@ public with sharing class ContactTriggerHandler {
                         }
                         contACTList.add(con);
                     }
-                    c.Amount_Great_Problem__c = MaxAmmount;
-                }                   
+                    if(c.Amount_Great_Problem__c >= MaxAmmount) {
+                        c.Amount_Great_Problem__c = MaxAmmount;
+                    }
+                }               
             }
         }
         insert contACTList;
     }
-}
+}      

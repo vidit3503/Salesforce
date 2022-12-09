@@ -1,0 +1,37 @@
+<aura:component implements="flexipage:availableForAllPageTypes"  controller="AuraTask1" access="global" >
+    <aura:attribute name="accounts" type="List" />
+    <aura:handler name ="init" value="{!this}" action="{!c.doInit}"/>
+
+    <lightning:input type="text" name="searchKey" aura:id="searchKey" onchange="{!c.searchRecords}" placeholder="Search" />   
+    <div style="width: 95%; margin-left:2.5%;">
+        
+        <lightning:accordion>
+            <lightning:input type="text" name="searchKey" aura:id="searchKey" onchange="{!c.searchRecords}" placeholder="Search" />
+            <aura:iteration items="{!v.accounts}" var="acc" >
+                <lightning:accordionSection name="{!acc.Name}" 
+                    label="{!acc.Name}">
+                    <table class="slds-table slds-table--bordered slds-table--cell-buffer slds-table--striped slds-max-medium-table--stacked-horizontal"
+                    role="grid">
+                        <tbody>
+                            <tr class="slds-hint-parent">
+                                <lightning:accordion>
+                                    <aura:iteration items="{!acc.Contacts}" var="con">
+                                        <lightning:accordionSection label="{!con.Name}">    
+                                            <aura:set attribute="body">
+                                                    
+                                                <p>FirstName : {!con.FirstName}</p>
+                                                <p>LastName: {!con.LastName}</p>
+                                                    
+                                            </aura:set>
+                                        </lightning:accordionSection>
+                                    </aura:iteration>
+                                </lightning:accordion>
+                            </tr>
+                        </tbody>
+                    </table>
+                </lightning:accordionSection>
+            </aura:iteration>
+        </lightning:accordion>
+    </div>
+</aura:component>	
+

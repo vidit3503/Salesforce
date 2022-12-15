@@ -1,5 +1,6 @@
-<apex:page controller="UploadFilesInOpportunity">
+<apex:page controller="UploadFilesInOpportunity" action="{!uploadFilesInOpportunity}">
     <apex:form>
-        <apex:commandButton value="Upload Files" action="{!uploadFilesInOpportunity}" />
+        <br/>
+        <apex:image value = "{!imageURL}" style="height:500px ; width:700px" alt="Image Will be Poped"/>
     </apex:form>
 </apex:page>

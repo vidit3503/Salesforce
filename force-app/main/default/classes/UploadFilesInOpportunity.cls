@@ -1,5 +1,7 @@
 public with sharing class UploadFilesInOpportunity {
 
+    public static String imageUrl;
+
     @future(callout=true)
     public static void UploadFilesInOpportunity() {
         String url = 'https://api.unsplash.com/photos/random/?query=minimal&client_id=n6hIGrZfOLw24WT89yQUSyVhvSwPkghd96xo7uvGvpc' ;
@@ -10,7 +12,7 @@ public with sharing class UploadFilesInOpportunity {
         HttpResponse res = http.send(req);
         String response = res.getBody();
         System.debug(response);
-        String imageUrl = response.substring(response.indexOf('https://'),response.indexOf('","full"'));
+        imageUrl = response.substring(response.indexOf('https://'),response.indexOf('","full"'));
         System.debug(imageUrl);
         HttpRequest req2 = new HttpRequest();
         req2.setEndpoint(imageUrl);
@@ -30,6 +32,10 @@ public with sharing class UploadFilesInOpportunity {
         cdl.linkedentityid =  opportunityId;
         cdl.visibility = 'AllUsers';
         cdl.sharetype = 'V';
-        insert cdl; 
+        insert cdl;
+    }
+    // get image
+    public static String getImageUrl() {
+        return imageUrl;
     }
 }

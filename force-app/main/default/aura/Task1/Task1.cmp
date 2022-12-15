@@ -1,12 +1,10 @@
 <aura:component implements="flexipage:availableForAllPageTypes"  controller="AuraTask1" access="global" >
-    <aura:attribute name="accounts" type="List" />
+    <aura:attribute name="accounts" type="Account[]" />
     <aura:handler name ="init" value="{!this}" action="{!c.doInit}"/>
+    <lightning:input aura:id="searchKey" label="Search Key" onchange="{!c.searchRecords}" />
 
-    <lightning:input type="text" name="searchKey" aura:id="searchKey" onchange="{!c.searchRecords}" placeholder="Search" />   
     <div style="width: 95%; margin-left:2.5%;">
-        
-        <lightning:accordion>
-            <lightning:input type="text" name="searchKey" aura:id="searchKey" onchange="{!c.searchRecords}" placeholder="Search" />
+        <lightning:accordion title="Account" allowMultipleSectionsOpen="true">
             <aura:iteration items="{!v.accounts}" var="acc" >
                 <lightning:accordionSection name="{!acc.Name}" 
                     label="{!acc.Name}">
@@ -14,14 +12,12 @@
                     role="grid">
                         <tbody>
                             <tr class="slds-hint-parent">
-                                <lightning:accordion>
+                                <lightning:accordion allowMultipleSectionsOpen="true">
                                     <aura:iteration items="{!acc.Contacts}" var="con">
                                         <lightning:accordionSection label="{!con.Name}">    
                                             <aura:set attribute="body">
-                                                    
                                                 <p>FirstName : {!con.FirstName}</p>
-                                                <p>LastName: {!con.LastName}</p>
-                                                    
+                                                <p>LastName: {!con.LastName}</p>      
                                             </aura:set>
                                         </lightning:accordionSection>
                                     </aura:iteration>
@@ -34,4 +30,3 @@
         </lightning:accordion>
     </div>
 </aura:component>	
-

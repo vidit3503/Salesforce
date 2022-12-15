@@ -1,0 +1,5 @@
+<apex:page controller="UploadFilesInOpportunity">
+    <apex:form>
+    <apex:image value="{!ImGurl}" style="height:60% ; width:90%; margin-left:5%;"/>
+    </apex:form>
+</apex:page>

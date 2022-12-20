@@ -8,9 +8,11 @@
     <aura:attribute name="accounts" type="Account[]"/>
     <aura:handler name ="init" value="{!this}" action="{!c.doInit}"/>
 
-    <lightning:input type="search" name="searchKey" aura:id="searchKey" onchange="{!c.searchKeyChange}" placeholder="Search Account" />
-
+    <div style="text-align: center; font-size:30px; margin-top:10px; color:#0176d3;">Accounts</div>
+    
     <div style="width: 95%; margin-left:2.5%;">
+        <lightning:input type="search" name="searchKey" aura:id="searchKey" onchange="{!c.searchKeyChange}" placeholder="Search Account" />
+        <br/>
         <lightning:accordion title="Account" allowMultipleSectionsOpen="true">
             <aura:iteration items="{!v.paginationList}" var="acc" >
                 <lightning:accordionSection name="{!acc.Name}" 
@@ -19,19 +21,17 @@
                     role="grid">
                         <tbody>
                             <tr class="slds-hint-parent">
+                                <aura:if isTrue="{!empty(acc.Contacts)}">
+                                    <div Style="text-align : center"> " There are no related contacts "</div>
+                                </aura:if>
                                 <lightning:accordion allowMultipleSectionsOpen="true">
                                     <aura:iteration items="{!acc.Contacts}" var="con">
-                                        <aura:if isTrue="{!not(empty(v.acc.Contacts))}">
-                                            <lightning:accordionSection label="{!con.Name}">    
-                                                <aura:set attribute="body">
-                                                    <p>FirstName : {!con.FirstName}</p>
-                                                    <p>LastName: {!con.LastName}</p>      
-                                                </aura:set>
-                                            </lightning:accordionSection>
-                                            <aura:set attribute="else">
-                                                <div Style="text-align : center"> " There are no related contacts "</div>
+                                        <lightning:accordionSection label="{!con.Name}">    
+                                            <aura:set attribute="body">
+                                                <p>FirstName : {!con.FirstName}</p>
+                                                <p>LastName: {!con.LastName}</p>      
                                             </aura:set>
-                                        </aura:if>
+                                        </lightning:accordionSection>
                                     </aura:iteration>
                                 </lightning:accordion>
                             </tr>
@@ -42,12 +42,23 @@
         </lightning:accordion>
         <br/>
         <!-- next, previous buttons  -->
-        <div class="slds-grid slds-grid_align-center">
+        <div class="slds-grid">
+            <div style="font-size: large;">
+                Record Range : &nbsp;
+                <lightning:formattedNumber value="{!v.start + 1}" minimumIntegerDigits="1" maximumFractionDigits="0" />
+                -
+                <lightning:formattedNumber value="{!v.end + 1}" minimumIntegerDigits="1" maximumFractionDigits="0" />
+                &nbsp; Total Records: &nbsp;
 
-            <div>
+                <lightning:formattedNumber value="{!v.totalSize}" minimumIntegerDigits="1" maximumFractionDigits="0" />
+                &nbsp; Page Size: &nbsp;
+                <lightning:formattedNumber value="{!v.pageSize}" minimumIntegerDigits="1" maximumFractionDigits="0" />
+                &nbsp;&nbsp;
                 <lightning:button label="Previous" variant="brand" onclick="{!c.previous}" disabled="{!v.start == 0}" />
                 <lightning:button label="Next" variant="brand" onclick="{!c.next}" disabled="{!v.end + 1 >= v.totalSize}" />
             </div>
         </div>
+
+        <!-- page number  -->
     </div>
 </aura:component>

@@ -187,13 +187,13 @@
 
     onSelectChange : function(component, event, helper) {
         var selected = component.find("StageName").get("v.value");
-        component.set("v.OpportunityData.StageName",selected);
+        component.set("v.opportunityData.StageName",selected);
         console.log('opp::::'+JSON.stringify(selected));
     },
 
     onSelectChange2 : function(component, event, helper) {
         var selected = component.find("Subject").get("v.value");
-        component.set("v.EventData.Subject",selected);
+        component.set("v.eventData.Subject",selected);
         console.log('opp::::'+JSON.stringify(selected));
     },
 

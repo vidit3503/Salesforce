@@ -1,14 +1,18 @@
 <aura:component controller = "DragAndDrop" implements="flexipage:availableForAllPageTypes" >
 
-    <!-- account list -->
     <aura:attribute name="contact" type="contact[]"/>
     <aura:attribute name="contactWrapper1" type="DragAndDrop.ContactWrapper"/>
     <aura:attribute name="contactWrapper2" type="DragAndDrop.ContactWrapper"/>
     <aura:attribute name="searchKey1" type="String"/>
     <aura:attribute name="searchKey2" type="String"/>
-
+    <aura:attribute name="setMessage" type="String"/>
+    <aura:attribute name="showError" type="Boolean" default="false"/>
+    <aura:attribute name="spinner" type="Boolean" default="false"/>
+    <aura:renderIf isTrue="{!v.spinner}">
+        <lightning:spinner aura:id="spinner" alternativeText="Loading" size="large" />
+    </aura:renderIf>
+    
     <div class="slds-grid slds-wrap">
-
         <div class="slds-col slds-size_1-of-2">
             <div class="slds-box">
                 <div class="slds-form-element">
@@ -17,6 +21,13 @@
                         <br/>
                     </div>
                     <div class = "slds-box"  ondragover="{!c.dragOver}" ondrop="{!c.dropAccount1}" >
+                    <!-- <aura:renderIf isTrue="{!v.showError}">
+                        <div class="slds-box">
+                            <lightning:icon iconName="utility:warning" alternativeText="Warning" size="Medium" />&nbsp;
+                            <b>No Account found </b>&nbsp;
+                        </div>
+                    </aura:renderIf>     -->
+                
                     <aura:iteration items = "{!v.contactWrapper1.contactsAccount1}" var="con1" >
                         <div class="slds-box" ondragstart="{!c.dragStart}" draggable="true"  id="{!con1.Id}">
                             <!-- contact icon -->

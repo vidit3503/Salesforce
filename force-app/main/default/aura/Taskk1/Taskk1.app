@@ -1,7 +1,7 @@
 <aura:application extends="force:slds">
-    <!-- <c:Task1/> -->
+    <c:Task1/>
     <!-- <c:DragAndDrop/> -->
-    <c:AuraWizard/>
+    <!-- <c:AuraWizard/> -->
 </aura:application>	
 
 

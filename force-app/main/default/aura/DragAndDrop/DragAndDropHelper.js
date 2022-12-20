@@ -44,5 +44,16 @@
             }
         }
         );$A.enqueueAction(action);
+    },
+
+    doInit : function(component, event, helper) {
+        var action = component.get("c.getContacts");
+        action.setCallback(this, function(response) {
+            var state = response.getState();
+            if (component.isValid() && state === "SUCCESS") {
+                component.set("v.contactWrapper", response.getReturnValue());
+                console.log('contacts: ' + JSON.stringify(response.getReturnValue()));
+            }
+        });$A.enqueueAction(action);
     }
 })

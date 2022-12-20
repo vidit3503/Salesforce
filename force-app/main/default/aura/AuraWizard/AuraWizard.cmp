@@ -138,7 +138,7 @@
                         <tr>
                             <td>
                                 <div>
-                                    <label class="slds-form-element__label ">FirstName</label>
+                                    <label class="slds-form-element__label ">FirstName <span style="color:rgba(22, 20, 20, 0.378) ;">(Optional)</span> </label>
                                 </div>                                        
                                 <div>
                                     <ui:inputText class="slds-input " aura:id="FirstName" value="{!v.contactData.FirstName}"></ui:inputText>

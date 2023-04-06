@@ -5,9 +5,10 @@ public with sharing class AuraTask1 {
         List<Account> accList = [select Id,Name,Rating,Phone,(select firstname,lastname,Name from contacts) FROM Account Order By name];
         return accList;
     }
+
     @AuraEnabled
-    public static List<Account> findByName(String searchKey) {
+    public static List<Account> getByName(String searchKey) {
         String name =  '%'+ searchKey + '%';
-            return [SELECT id, name, phone,(select firstname,lastname,Name from contacts) FROM Account WHERE name LIKE :name];
+        return [SELECT id, name, phone,(select firstname,lastname,Name from contacts) FROM Account WHERE name LIKE :name];
     }
 }

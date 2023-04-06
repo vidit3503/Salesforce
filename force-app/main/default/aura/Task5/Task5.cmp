@@ -1,0 +1,33 @@
+<aura:component implements="flexipage:availableForAllPageTypes">
+
+    <!--    ● Image URL
+            ● Background Color
+            ● Description
+            ● Font size
+            ● Font Color    -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <aura:attribute name="imageURL" type="String" default="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"/>
+    <aura:attribute name="backgroundColor" type="String" default="#000000"/>
+    <aura:attribute name="description" type="String" default="This is a description"/>
+    <aura:attribute name="fontSize" type="String" default="20px"/>
+    <aura:attribute name="fontColor" type="String" default="#ffffff"/>
+
+    <div style="width:40%; margin-left: 20px;">
+        <lightning:input type="text" label="Image URL" value="{!v.imageURL}" onchange="{!c.handleImageURLChange}"></lightning:input>
+        <lightning:input type="color" label="Background" value="{!v.backgroundColor}" onchange="{!c.handleBackgroundColorChange}"></lightning:input>
+        <lightning:input type="text" label="Description" value="{!v.description}" onchange="{!c.handleDescriptionChange}"></lightning:input>
+        <lightning:input type="color" label="Font Color" value="{!v.fontColor}" onchange="{!c.handleFontColorChange}"></lightning:input>
+        <lightning:input type="text" label="Font Size" value="{!v.fontSize}" onchange = "{!c.handleFontSizeChange}"></lightning:input>
+        <br/>
+    </div>
+
+    <div style="width:100% ; margin-left:20px">    
+        <img src="{!v.imageURL}" style="width: 40%;"/>
+        <br/>
+        <div style="{!'background-color: ' + v.backgroundColor + '; color: ' + v.fontColor + '; font-size: ' + v.fontSize}">
+            <p style="text-align: center;">{!v.description}</p>
+        </div>
+    </div>
+
+</aura:component>	

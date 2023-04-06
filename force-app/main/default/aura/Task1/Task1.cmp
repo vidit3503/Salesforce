@@ -1,17 +1,29 @@
-<aura:component implements="flexipage:availableForAllPageTypes"  controller="AuraTask1" access="global" >
-    <aura:attribute name="accounts" type="Account[]" />
-    <aura:handler name ="init" value="{!this}" action="{!c.doInit}"/>
-    <lightning:input aura:id="searchKey" label="Search Key" onchange="{!c.searchRecords}" />
+<aura:component implements="flexipage:availableForAllPageTypes"  controller="AuraTask1" access="global">
 
+    <aura:attribute name="paginationList" type="Account[]"/>
+    <aura:attribute name="pageSize" type="Integer" default="10"/>
+    <aura:attribute name="totalSize" type="Integer"/>
+    <aura:attribute name="start" type="Integer" />
+    <aura:attribute name="end" type="Integer"/>
+    <aura:attribute name="accounts" type="Account[]"/>
+    <aura:handler name ="init" value="{!this}" action="{!c.doInit}"/>
+
+    <div style="text-align: center; font-size:30px; margin-top:10px; color:#0176d3;">Accounts</div>
+    
     <div style="width: 95%; margin-left:2.5%;">
+        <lightning:input type="search" name="searchKey" aura:id="searchKey" onchange="{!c.searchKeyChange}" placeholder="Search Account" />
+        <br/>
         <lightning:accordion title="Account" allowMultipleSectionsOpen="true">
-            <aura:iteration items="{!v.accounts}" var="acc" >
+            <aura:iteration items="{!v.paginationList}" var="acc" >
                 <lightning:accordionSection name="{!acc.Name}" 
                     label="{!acc.Name}">
                     <table class="slds-table slds-table--bordered slds-table--cell-buffer slds-table--striped slds-max-medium-table--stacked-horizontal"
                     role="grid">
                         <tbody>
                             <tr class="slds-hint-parent">
+                                <aura:if isTrue="{!empty(acc.Contacts)}">
+                                    <div Style="text-align : center"> " There are no related contacts "</div>
+                                </aura:if>
                                 <lightning:accordion allowMultipleSectionsOpen="true">
                                     <aura:iteration items="{!acc.Contacts}" var="con">
                                         <lightning:accordionSection label="{!con.Name}">    
@@ -28,5 +40,25 @@
                 </lightning:accordionSection>
             </aura:iteration>
         </lightning:accordion>
+        <br/>
+        <!-- next, previous buttons  -->
+        <div class="slds-grid">
+            <div style="font-size: large;">
+                Record Range : &nbsp;
+                <lightning:formattedNumber value="{!v.start + 1}" minimumIntegerDigits="1" maximumFractionDigits="0" />
+                -
+                <lightning:formattedNumber value="{!v.end + 1}" minimumIntegerDigits="1" maximumFractionDigits="0" />
+                &nbsp; Total Records: &nbsp;
+
+                <lightning:formattedNumber value="{!v.totalSize}" minimumIntegerDigits="1" maximumFractionDigits="0" />
+                &nbsp; Page Size: &nbsp;
+                <lightning:formattedNumber value="{!v.pageSize}" minimumIntegerDigits="1" maximumFractionDigits="0" />
+                &nbsp;&nbsp;
+                <lightning:button label="Previous" variant="brand" onclick="{!c.previous}" disabled="{!v.start == 0}" />
+                <lightning:button label="Next" variant="brand" onclick="{!c.next}" disabled="{!v.end + 1 >= v.totalSize}" />
+            </div>
+        </div>
+
+        <!-- page number  -->
     </div>
-</aura:component>	
+</aura:component>
